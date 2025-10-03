@@ -49,7 +49,7 @@ yamllint DSL/v1/examples/*.yaml
 
 ---
 
-## Using this repo to work with ChatGPT
+## Using this repo to work with me
 
 **Paste this in any new chat to lock context:**
 
