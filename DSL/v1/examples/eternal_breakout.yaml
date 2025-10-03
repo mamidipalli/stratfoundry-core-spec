@@ -1,43 +1,67 @@
-name: ETERNAL M5 Breakout Long
+name: Eternal Breakout Long
 version: 1.0.0
+
 universe:
+  - symbol: BTCUSDTPERP
+    venue: DELTA
+    asset_class: crypto_perp
 
-symbol: ETERNAL
-venue: NSE
-asset_class: equity
 data:
-timeframes: [1m, 5m, 15m]
-warmup_bars: 300
-session: { timezone: Asia/Kolkata, trading_days: MON-FRI }
+  timeframes: [1m, 5m, 15m]
+  warmup_bars: 300
+  session:
+    timezone: "UTC"
+    trading_days: "MON-FRI"
+
 indicators:
+  - id: ema20
+    fn: EMA
+    on: close@5m
+    args:
+      period: 20
+  - id: rsi14
+    fn: RSI
+    on: close@5m
+    args:
+      period: 14
 
-{ id: ema20, fn: EMA, on: close@5m, args: { period: 20 } }
-
-{ id: rsi14, fn: RSI, on: close@5m, args: { period: 14 } }
 signals:
-entry_long:
-all:
+  entry_long:
+    all:
+      - { ">": { lhs: close@5m, rhs: ema20 } }
+      - { ">": { lhs: rsi14, rhs: 55 } }
+      - { ">": { lhs: close@1m, rhs: prev_high@15m } }
+  exit_long:
+    any:
+      - { "<": { lhs: close@5m, rhs: ema20 } }
+      - { "<": { lhs: rsi14, rhs: 45 } }
 
-{ ">": { lhs: close@5m, rhs: ema20 } }
-
-{ ">": { lhs: rsi14, rhs: 55 } }
-
-{ ">": { lhs: close@1m, rhs: prev_high@15m } }
-exit_long:
-any:
-
-{ "<": { lhs: close@5m, rhs: ema20 } }
-
-{ "<": { lhs: rsi14, rhs: 45 } }
 risk:
-capital_per_trade: { type: percent_equity, value: 1.0 }
-max_daily_trades: 2
+  capital_per_trade:
+    type: percent_equity
+    value: 1.0
+  max_daily_trades: 2
+  max_concurrent_positions: 1
+
 orders:
-entry: { side: BUY, type: LIMIT, price: "last - 0.05%_of_last", qty: risk_based }
-sl: { type: STOP, price: "entry - 0.50%_of_entry" }
-tsl: { type: TRAIL_PERCENT, trail: 0.35, activation: "profit >= 0.40%" }
-tp: { type: LIMIT, price: "entry + 0.80%_of_entry", oco_with: sl }
+  entry:
+    side: BUY
+    type: LIMIT
+    price: "last - 0.05%_of_last"
+    qty: risk_based
+  sl:
+    type: STOP
+    price: "entry - 0.50%_of_entry"
+  tsl:
+    type: TRAIL_PERCENT
+    trail: 0.35
+    activation: "profit >= 0.40%"
+  tp:
+    type: LIMIT
+    price: "entry + 0.80%_of_entry"
+    oco_with: sl
+
 execution:
-broker: DELTA
-time_in_force: DAY
-reduce_only: false
+  broker: DELTA
+  time_in_force: DAY
+  reduce_only: false
