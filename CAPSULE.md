@@ -20,7 +20,7 @@
 See `SERVICE_MATRIX.md`. All designs in this repo are the source of truth.
 
 **Chat bootstrap (paste this in any new ChatGPT thread)**
-> Use context capsule **SF-CORE-2025-10-03** from https://github.com/<YOUR_GH>/stratfoundry-core-spec .  
+> Use context capsule **SF-CORE-2025-10-03** from https://github.com/mamidipalli/stratfoundry-core-spec.git .  
 > Follow CAPSULE.md and the YAML DSL → IR → Runner pipeline.  
 > Today’s task: <one-liner>.  
 > Only propose changes that comply with CAPSULE & schemas here.
