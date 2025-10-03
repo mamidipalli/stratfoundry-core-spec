@@ -342,6 +342,12 @@
                         "string",
                         "number"
                     ]
+                },
+                "oco_with": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
                 }
             },
             "additionalProperties": false
