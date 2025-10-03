@@ -1,8 +1,8 @@
-name: ZOMATO M5 Breakout Long
+name: ETERNAL M5 Breakout Long
 version: 1.0.0
 universe:
 
-symbol: ZOMATO
+symbol: ETERNAL
 venue: NSE
 asset_class: equity
 data:
