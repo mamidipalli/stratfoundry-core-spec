@@ -1,0 +1,124 @@
+{
+"$schema": "https://json-schema.org/draft/2020-12/schema
+",
+"$id": "https://stratfoundry/specs/strategy.schema.json
+",
+"title": "StrategyDSL",
+"type": "object",
+"required": ["name","version","universe","data","indicators","signals","orders","execution","risk"],
+"additionalProperties": false,
+"properties": {
+"name": {"type":"string"},
+"version": {"type":"string"},
+"universe": {
+"type":"array","minItems":1,
+"items":{"type":"object","required":["symbol","venue","asset_class"],
+"properties":{
+"symbol":{"type":"string"},
+"venue":{"type":"string"},
+"asset_class":{"type":"string","enum":["equity","crypto","fx","fut","opt","crypto_perp"]}
+},
+"additionalProperties": false
+}
+},
+"data": {
+"type":"object","required":["timeframes","warmup_bars","session"],
+"properties":{
+"timeframes":{"type":"array","minItems":1,"items":{"type":"string","pattern":"^(1m|5m|15m|1h|1d)$"}},
+"warmup_bars":{"type":"integer","minimum":50,"maximum":5000},
+"session":{"type":"object","required":["timezone"],"properties":{"timezone":{"type":"string"},"trading_days":{"type":"string"}},"additionalProperties": false}
+},
+"additionalProperties": false
+},
+"indicators": {
+"type":"array","minItems":1,
+"items":{"type":"object","required":["id","fn","on","args"],
+"properties":{
+"id":{"type":"string"},
+"fn":{"type":"string","enum":["EMA","SMA","RSI","VWAP","ATR","MACD","DONCHIAN","SUPERTREND"]},
+"on":{"type":"string","pattern":"^(open|high|low|close|vol)@(?:1m|5m|15m|1h|1d)$"},
+"args":{"type":"object"}
+},
+"additionalProperties": false
+}
+},
+"signals": {
+"type":"object",
+"properties":{
+"entry_long":{"$ref":"#/definitions/expr"},
+"exit_long":{"$ref":"#/definitions/expr"},
+"entry_short":{"$ref":"#/definitions/expr"},
+"exit_short":{"$ref":"#/definitions/expr"}
+},
+"additionalProperties": false
+},
+"risk": {
+"type":"object",
+"properties":{
+"capital_per_trade":{"type":"object","required":["type","value"],"properties":{"type":{"type":"string","enum":["percent_equity","fixed_quote"]},"value":{"type":"number","minimum":0}},"additionalProperties":false},
+"max_daily_trades":{"type":"integer","minimum":0},
+"max_concurrent_positions":{"type":"integer","minimum":0},
+"daily_loss_limit_pct":{"type":"number","minimum":0}
+},
+"additionalProperties": false
+},
+"orders": {
+"type":"object","required":["entry"],
+"properties":{
+"entry":{"$ref":"#/definitions/order"},
+"sl":{"$ref":"#/definitions/order"},
+"tp":{"$ref":"#/definitions/order"},
+"tsl":{
+"type":"object","required":["type","trail"],
+"properties":{"type":{"type":"string","const":"TRAIL_PERCENT"},"trail":{"type":"number","minimum":0},"activation":{"type":"string"}},
+"additionalProperties": false
+}
+},
+"additionalProperties": false
+},
+"execution": {
+"type":"object","required":["broker","time_in_force"],
+"properties":{
+"broker":{"type":"string"},
+"time_in_force":{"type":"string","enum":["DAY","GTC"]},
+"reduce_only":{"type":"boolean"},
+"slippage_model":{"type":"object"}
+},
+"additionalProperties": false
+}
+},
+"definitions": {
+"cmp": {
+"type":"object",
+"properties":{
+">":{"type":"object","required":["lhs","rhs"],"properties":{"lhs":{"type":"string"},"rhs":{}}},
+"<":{"type":"object","required":["lhs","rhs"],"properties":{"lhs":{"type":"string"},"rhs":{}}}
+},
+"additionalProperties": false
+},
+"logic":{
+"type":"object",
+"properties":{
+"all":{"type":"array","minItems":1,"items":{"$ref":"#/definitions/expr"}},
+"any":{"type":"array","minItems":1,"items":{"$ref":"#/definitions/expr"}}
+},
+"additionalProperties": false
+},
+"order":{
+"type":"object","required":["type"],
+"properties":{
+"side":{"type":"string","enum":["BUY","SELL"]},
+"type":{"type":"string","enum":["MARKET","LIMIT","STOP","STOP_LIMIT","TRAIL_PERCENT"]},
+"price":{"type":["string","number"]},
+"qty":{"type":["string","number"]}
+},
+"additionalProperties": false
+},
+"expr":{
+"oneOf":[
+{"$ref":"#/definitions/logic"},
+{"$ref":"#/definitions/cmp"}
+]
+}
+}
+}

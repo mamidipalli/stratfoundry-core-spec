@@ -1,0 +1,23 @@
+{
+"$schema": "https://json-schema.org/draft/2020-12/schema
+",
+"title": "StrategyIR",
+"type": "object",
+"required": ["strategy_id","dsl_version","universe","graphs","orders","risk","runtime"],
+"properties": {
+"strategy_id":{"type":"string"},
+"dsl_version":{"type":"string"},
+"universe":{"type":"array","items":{"type":"object","required":["instrument_id","symbol","broker"],"properties":{"instrument_id":{"type":"string"},"symbol":{"type":"string"},"broker":{"type":"string"}}}},
+"graphs":{
+"type":"object",
+"required":["indicators","signals"],
+"properties":{
+"indicators":{"type":"array","items":{"type":"object","required":["id","fn","tf","args"],"properties":{"id":{"type":"string"},"fn":{"type":"string"},"tf":{"type":"string"},"args":{"type":"object"}}}},
+"signals":{"type":"array","items":{"type":"object","required":["id","expr"],"properties":{"id":{"type":"string"},"expr":{"type":"string"}}}}
+}
+},
+"orders":{"type":"object"},
+"risk":{"type":"object"},
+"runtime":{"type":"object","properties":{"warmup_bars":{"type":"integer"},"session":{"type":"object"}}}
+}
+}

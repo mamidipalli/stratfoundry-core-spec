@@ -1,0 +1,14 @@
+{
+"$schema":"https://json-schema.org/draft/2020-12/schema
+",
+"title":"ExecutionReport",
+"type":"object",
+"required":["client_order_id","state"],
+"properties":{
+"client_order_id":{"type":"string"},
+"broker_order_id":{"type":"string"},
+"state":{"type":"string","enum":["NEW","PARTIAL","FILLED","CANCELED","REPLACED","REJECTED"]},
+"fills":{"type":"array","items":{"type":"object","required":["qty","price","ts"],"properties":{"qty":{"type":"string"},"price":{"type":"string"},"ts":{"type":"string"}}}}
+},
+"additionalProperties": true
+}

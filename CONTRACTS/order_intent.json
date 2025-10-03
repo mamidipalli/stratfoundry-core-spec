@@ -1,0 +1,21 @@
+{
+"$schema":"https://json-schema.org/draft/2020-12/schema
+",
+"title":"OrderIntent",
+"type":"object",
+"required":["intent_id","strategy_id","instrument_id","side","type","qty","time_in_force","client_order_id"],
+"properties":{
+"intent_id":{"type":"string"},
+"strategy_id":{"type":"string"},
+"instrument_id":{"type":"string"},
+"side":{"type":"string","enum":["BUY","SELL"]},
+"type":{"type":"string","enum":["MARKET","LIMIT","STOP","STOP_LIMIT","TRAIL_PERCENT"]},
+"price":{"type":["number","null"]},
+"trail_pct":{"type":["number","null"]},
+"qty":{"type":"string"},
+"time_in_force":{"type":"string","enum":["DAY","GTC"]},
+"reduce_only":{"type":"boolean"},
+"client_order_id":{"type":"string"}
+},
+"additionalProperties": false
+}

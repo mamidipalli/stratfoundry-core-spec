@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+title: StratFoundry Core API (Public)
+version: 0.1.0
+paths:
+/v1/authoring/synthesize:
+post:
+summary: LLM → YAML DSL
+responses: { "200": { "description": "ok" } }
+/v1/authoring/validate:
+post:
+summary: Validate YAML DSL
+responses: { "200": { "description": "ok" } }
+/v1/compile:
+post:
+summary: Compile YAML DSL → IR
+responses: { "200": { "description": "ok" } }
+/v1/preview:
+post:
+summary: IR-driven preview
+responses: { "200": { "description": "ok" } }
+/v1/deploy:
+post:
+summary: Deploy IR
+responses: { "200": { "description": "ok" } }
